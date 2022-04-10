@@ -32,14 +32,15 @@ public class ModuleManager implements Listenable {
     public HealthLog HEALTHLOG = new HealthLog();
     public Skeletal SKELETAL = new Skeletal();
     //combat
-    public KillAura KILLAURA = new KillAura();
+//    public KillAura KILLAURA = new KillAura();
     public AimAssist AIMASSIST = new AimAssist();
     public AutoClicker AUTOCLICKER = new AutoClicker();
     public Reach REACH = new Reach();
     public Hitbox HITBOX = new Hitbox();
     public Velocity VELOCITY = new Velocity();
     public AutoSoup AUTOSOUP = new AutoSoup(); 
-    public Misplace MISPLACE = new Misplace();
+    public Criticals CRITICALS = new Criticals(); 
+//    public Misplace MISPLACE = new Misplace();
     //world
     public MLG MLG = new MLG();
     public FastPlace FASTPLACE = new FastPlace();
@@ -47,8 +48,11 @@ public class ModuleManager implements Listenable {
     public Sprint SPRINT = new Sprint();
     public InventoryMove INVENTORYMOVE = new InventoryMove();
     public SafeWalk SAFEWALK = new SafeWalk();
+    public NoFall NOFALL = new NoFall();
+    public Fly FLY = new Fly();
     //misc
-    public AntiBot ANTIBOT = new AntiBot();
+//    public AntiBot ANTIBOT = new AntiBot();
+    public ItemLock ITEMLOCK = new ItemLock();
     public Commands COMMANDS = new Commands();
     public OldAnimations OLDANIMATIONS = new OldAnimations();
     public MushExploit MUSHEXPLOIT = new MushExploit();
@@ -66,7 +70,7 @@ public class ModuleManager implements Listenable {
     	modules.add(CAMERA);
     	modules.add(AESTHETICS);
     	modules.add(SKELETAL);
-    	//modules.add(HEALTHLOG);
+//    	modules.add(HEALTHLOG);
     	//combat
     	modules.add(AIMASSIST);
     	modules.add(AUTOCLICKER);
@@ -74,7 +78,8 @@ public class ModuleManager implements Listenable {
     	//modules.add(MISPLACE);
     	modules.add(REACH);
     	modules.add(VELOCITY);
-    	modules.add(AUTOSOUP);  	
+    	modules.add(AUTOSOUP);
+    	modules.add(CRITICALS);
         //world
     	modules.add(MLG);  
     	modules.add(FASTPLACE);  
@@ -82,10 +87,13 @@ public class ModuleManager implements Listenable {
     	modules.add(SPRINT);
     	modules.add(INVENTORYMOVE);
     	modules.add(SAFEWALK);
+    	modules.add(NOFALL);
+    	modules.add(FLY);
         //misc
     	modules.add(COMMANDS);
     	modules.add(OLDANIMATIONS);
-    	modules.add(MUSHEXPLOIT);  	
+    	modules.add(MUSHEXPLOIT);
+    	modules.add(ITEMLOCK);
     	//modules.add(ANTIBOT);
     	
     	//post

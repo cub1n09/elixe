@@ -22,6 +22,9 @@ import elixe.modules.option.ModuleColor;
 import elixe.modules.option.ModuleFloat;
 import elixe.modules.option.ModuleInteger;
 import elixe.modules.option.ModuleKey;
+import elixe.utils.misc.ChatUtils;
+import elixe.utils.misc.EnchantmentUtils;
+import elixe.utils.misc.LoggingUtils;
 import elixe.utils.render.ESPSetup;
 import elixe.utils.render.WorldToScreen;
 import joptsimple.HelpFormatter;
@@ -41,6 +44,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -50,6 +54,8 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemHoe;
@@ -88,6 +94,9 @@ public class ESP extends Module {
 
 		moduleOptions.add(itemNameOption);
 		moduleOptions.add(itemNameLocationOption);
+		
+		moduleOptions.add(itemEnchOption);
+		moduleOptions.add(itemEnchLocationOption);
 
 		moduleOptions.add(itemIconOption);
 		moduleOptions.add(itemIconLocationOption);
@@ -223,6 +232,23 @@ public class ESP extends Module {
 			updateVisibilityOfOptions(new AModuleOption[] {itemNameLocationOption}, drawItemName);
 		}
 	};
+	
+	//item enchantment
+	
+	int itemEnchLocation;
+	ModuleArray itemEnchLocationOption = new ModuleArray("item ench location", 0, new String[] { "up", "down" }) {
+		public void valueChanged() {
+			itemEnchLocation = (int) this.getValue();
+		}
+	};
+
+	boolean drawItemEnch;
+	ModuleBoolean itemEnchOption = new ModuleBoolean("draw item ench", false, true) {
+		public void valueChanged() {
+			drawItemEnch = (boolean) this.getValue();
+			updateVisibilityOfOptions(new AModuleOption[] {itemEnchLocationOption}, drawItemEnch);
+		}
+	};
 
 	//item icon
 	int itemIconLocation;
@@ -326,6 +352,10 @@ public class ESP extends Module {
 
 				if (drawItemName) {
 					drawItemName(minX, maxX, minY, maxY, entLiving);
+				}
+				
+				if (drawItemEnch) {
+					drawItemEnch(minX, maxX, minY, maxY, entLiving);
 				}
 
 				if (drawItemIcon) {
@@ -803,6 +833,56 @@ public class ESP extends Module {
 		}
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
+	}
+		
+	private void drawItemEnch(float minX, float maxX, float minY, float maxY, EntityLivingBase entLiving) {
+		ItemStack entItem = entLiving.getEquipmentInSlot(0);
+		if (entItem != null) {
+			
+			String entItemEnch;
+			
+			if(entItem.getEnchantmentTagList() != null) {
+				StringBuilder builder = new StringBuilder();
+				
+				for(int i = 0; i < entItem.getEnchantmentTagList().tagCount(); i++) {
+					
+					NBTBase nbtBase = entItem.getEnchantmentTagList().get(i);
+					EnchantmentUtils enchantmentUtils = new EnchantmentUtils(nbtBase);
+					
+					if(enchantmentUtils.getAbreviation().equals("NR")) {
+						builder.append("§cn/a");
+					} else {
+						builder.append(enchantmentUtils.toString());
+					}					
+					if(i != (entItem.getEnchantmentTagList().tagCount() -1))
+						builder.append(", ");
+				}
+				
+				entItemEnch = " §e(§b" + builder.toString() + "§e)";				
+			} else {
+				entItemEnch = "§cn/a";
+			}
+			
+			
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			
+			int textWidth = mc.fontRendererObj.getStringWidth(entItemEnch) / 2;
+			switch (itemEnchLocation) {
+			case 0: // up
+				mc.fontRendererObj.drawStringWithShadow(entItemEnch, minX + espWid - textWidth, minY - 10 - spacingYUp,
+						1f, 1f);
+				spacingYUp += 10;
+				break;
+			case 1: // down
+				mc.fontRendererObj.drawStringWithShadow(entItemEnch, minX + espWid - textWidth, maxY + 2 + spacingYDown,
+						1f, 1f);
+				spacingYDown += 10;
+				break;
+			}
+
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+		}
 	}
 
 	private void drawItemName(float minX, float maxX, float minY, float maxY, EntityLivingBase entLiving) {

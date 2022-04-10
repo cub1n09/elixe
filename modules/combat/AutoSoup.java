@@ -14,6 +14,7 @@ import elixe.modules.option.ModuleArrayMultiple;
 import elixe.modules.option.ModuleBoolean;
 import elixe.modules.option.ModuleFloat;
 import elixe.modules.option.ModuleInteger;
+import elixe.utils.misc.ChatUtils;
 import elixe.utils.misc.TimerUtils;
 import elixe.utils.player.InventoryItem;
 import me.zero.alpine.event.EventPriority;
@@ -29,6 +30,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
@@ -377,7 +379,7 @@ public class AutoSoup extends Module {
 			autoSoupStep++;
 			waitForUseItem = true;
 			break;
-
+			
 		case 2: // dropa o pote
 			// se o direito conseguir clicar
 			if (!waitForUseItem) {

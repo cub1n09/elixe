@@ -22,4 +22,5 @@ public class OnPacketSendEvent extends Cancellable {
 	public void setPacket(Packet packet) {
 		this.packet = packet;
 	}
+
 }

@@ -1,5 +1,6 @@
 package elixe.modules.render;
 
+import elixe.events.OnBlindnessEvent;
 import elixe.events.OnChangeWorldEvent;
 import elixe.events.OnFireFirstPersonEvent;
 import elixe.events.OnNauseaScaleEvent;
@@ -42,6 +43,7 @@ public class Aesthetics extends Module {
 		moduleOptions.add(fireHeightOption);
 		moduleOptions.add(ignorePumpkinOption);
 		moduleOptions.add(ignoreNauseaOption);
+		moduleOptions.add(ignoreBlindOption);
 	}
 
 	long currentTime = 0;
@@ -135,6 +137,13 @@ public class Aesthetics extends Module {
 	ModuleBoolean ignoreNauseaOption = new ModuleBoolean("ignore nausea", false) {
 		public void valueChanged() {
 			ignoreNausea = (boolean) this.getValue();
+		}
+	};
+	
+	boolean ignoreBlind;
+	ModuleBoolean ignoreBlindOption = new ModuleBoolean("ignore blindness", false) {
+		public void valueChanged() {
+			ignoreBlind = (boolean) this.getValue();
 		}
 	};
 
@@ -277,6 +286,13 @@ public class Aesthetics extends Module {
 	@EventHandler
 	private Listener<OnNauseaScaleEvent> onNauseaScaleEvent = new Listener<>(e -> {
 		if (ignoreNausea) {
+			e.cancel();
+		}
+	});
+	
+	@EventHandler
+	private Listener<OnBlindnessEvent> onBlindnessEvent = new Listener<>(e -> {
+		if (ignoreBlind) {
 			e.cancel();
 		}
 	});
