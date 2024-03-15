@@ -25,7 +25,7 @@ public class Elixe {
 
 	public Minecraft mc;
 
-	public String build = "betatest7.1";
+	public String build = "betatest7.2";
 
 	//startGame() : void - net.minecraft.client.Minecraft
 	//L:552
