@@ -22,9 +22,15 @@ public class Criticals extends Module {
 			return;
 		}
 		
-//		mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
-//				mc.thePlayer.posY + 0.2f, mc.thePlayer.posZ, false));
-		mc.thePlayer.addVelocity(0, 0.1, 0);
+		EntityPlayer lastEntity = (EntityPlayer) e.getAttackedEntity();
+		
+		   mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(lastEntity.posX,
+				lastEntity.posY, lastEntity.posZ, false));
+		   
+			mc.thePlayer.setPosition(lastEntity.posX,
+					lastEntity.posY, lastEntity.posZ);
+			mc.thePlayer.setAngles(lastEntity.cameraYaw, lastEntity.cameraPitch);
+		   
 //		ChatUtils.message(mc, "§apacket up ");
 		
 //		mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,
