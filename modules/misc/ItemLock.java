@@ -28,26 +28,34 @@ public class ItemLock extends Module {
 
 	public ItemLock() {
 		super("ItemLock", ModuleCategory.MISC);
-		
+
 		moduleOptions.add(lockedItemsOption);
 		moduleOptions.add(messageWarnOption);
+		moduleOptions.add(blockStackOption);
 	}
 
 	boolean[] lockedItems;
-	ModuleArrayMultiple lockedItemsOption = new ModuleArrayMultiple("locked items", new boolean[] { true, false, false },
-			new String[] { "sword", "bucket", "block" }) {
+	ModuleArrayMultiple lockedItemsOption = new ModuleArrayMultiple("locked items",
+			new boolean[] { true, false, false }, new String[] { "sword", "bucket", "block" }) {
 		public void valueChanged() {
 			lockedItems = (boolean[]) this.getValue();
 		}
 	};
-	
+
 	boolean messageWarn;
 	ModuleBoolean messageWarnOption = new ModuleBoolean("message warn", false) {
 		public void valueChanged() {
 			messageWarn = (boolean) this.getValue();
 		}
 	};
-	
+
+	boolean blockStack;
+	ModuleBoolean blockStackOption = new ModuleBoolean("block stack drop", false) {
+		public void valueChanged() {
+			blockStack = (boolean) this.getValue();
+		}
+	};
+
 	// 0 = sword, 1 = bucket, 2 = block
 	ArrayList<Item> filteredItems = new ArrayList<Item>();
 	@EventHandler
@@ -65,9 +73,15 @@ public class ItemLock extends Module {
 				if (e.getPacket() instanceof C07PacketPlayerDigging) {
 					C07PacketPlayerDigging packet = (C07PacketPlayerDigging) e.getPacket();
 					if (packet.getStatus() == C07PacketPlayerDigging.Action.DROP_ITEM) {
-						if(messageWarn)
+						if (messageWarn)
 							ChatUtils.message(mc, false, "§cthis item is §llocked§c!");
 						e.cancel();
+					} else if (packet.getStatus() == C07PacketPlayerDigging.Action.DROP_ALL_ITEMS) {
+						if (blockStack) {
+							e.cancel();
+							if (messageWarn)
+								ChatUtils.message(mc, false, "§cthis item is §llocked§c! §o(stack drop)");
+						}
 					}
 				}
 			}
