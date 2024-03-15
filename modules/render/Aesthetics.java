@@ -41,6 +41,7 @@ public class Aesthetics extends Module {
 
 		moduleOptions.add(hideScoreboardOption);
 		moduleOptions.add(fireHeightOption);
+		moduleOptions.add(fullbrightOption);
 		moduleOptions.add(ignorePumpkinOption);
 		moduleOptions.add(ignoreNauseaOption);
 		moduleOptions.add(ignoreBlindOption);
@@ -130,6 +131,13 @@ public class Aesthetics extends Module {
 	ModuleFloat fireHeightOption = new ModuleFloat("fire height", -0.7f, -1f, 0f) {
 		public void valueChanged() {
 			fireHeight = (float) this.getValue();
+		}
+	};
+	
+	boolean fullbright;
+	ModuleBoolean fullbrightOption = new ModuleBoolean("full bright", false) {
+		public void valueChanged() {
+			fullbright = (boolean) this.getValue();
 		}
 	};
 

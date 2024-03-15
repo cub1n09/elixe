@@ -18,7 +18,6 @@ public class Fly extends Module {
 			return;
 		
 		if(e.getPacket() instanceof C03PacketPlayer) {
-			C03PacketPlayer packet = (C03PacketPlayer) e.getPacket();
 			mc.thePlayer.capabilities.allowFlying = true;
 		}
 	});

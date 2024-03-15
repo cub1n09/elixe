@@ -56,6 +56,10 @@ public class ModuleManager implements Listenable {
     public Commands COMMANDS = new Commands();
     public OldAnimations OLDANIMATIONS = new OldAnimations();
     public MushExploit MUSHEXPLOIT = new MushExploit();
+    public AntiMonk ANTIMONK = new AntiMonk();
+    
+    //misc - dev
+//    public Ninja NINJA = new Ninja();
     
     public ModuleManager() {
     	//player    	
@@ -94,7 +98,10 @@ public class ModuleManager implements Listenable {
     	modules.add(OLDANIMATIONS);
     	modules.add(MUSHEXPLOIT);
     	modules.add(ITEMLOCK);
-    	//modules.add(ANTIBOT);
+    	modules.add(ANTIMONK);
+    	
+    	//dev
+//    	modules.add(NINJA);
     	
     	//post
     	HUD.setModuleManager(this);
@@ -135,7 +142,7 @@ public class ModuleManager implements Listenable {
     public ArrayList<Module> getModules() {
     	return modules;
     }
-
+    
     @EventHandler
     private Listener<OnMouseEvent> onMouseEvent = new Listener<>(e -> {
         if (!e.isState()) {      	

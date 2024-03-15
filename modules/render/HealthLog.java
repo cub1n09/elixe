@@ -25,7 +25,6 @@ public class HealthLog extends Module {
 
 	public HealthLog() {
 		super("HealthLog", ModuleCategory.RENDER);
-
 	}
 	
 
