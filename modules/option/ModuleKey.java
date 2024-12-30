@@ -16,12 +16,17 @@ public class ModuleKey extends AModuleOption {
 		this.name = "key";
 		this.key = key;
 		valueChanged();
+
 	}
 
 	public Object getValue() {
 		return key;
 	}
-	
+
+	public int getKey() {
+		return key;
+	}
+
 	public void setValue(Object v) {
 		this.key = (int) v;
 		valueChanged();

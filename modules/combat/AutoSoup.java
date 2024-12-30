@@ -3,14 +3,12 @@ package elixe.modules.combat;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import elixe.events.OnKeyEvent;
 import elixe.events.OnKeybindActionEvent;
 import elixe.events.OnTickEvent;
 import elixe.modules.Module;
 import elixe.modules.ModuleCategory;
-import elixe.modules.option.ModuleArrayMultiple;
-import elixe.modules.option.ModuleBoolean;
-import elixe.modules.option.ModuleFloat;
-import elixe.modules.option.ModuleInteger;
+import elixe.modules.option.*;
 import elixe.utils.misc.TimerUtils;
 import elixe.utils.player.InventoryItem;
 import me.zero.alpine.listener.EventHandler;
@@ -35,6 +33,7 @@ public class AutoSoup extends Module {
 		moduleOptions.add(dropBowlOption);
 
 		moduleOptions.add(refillOption);
+		moduleOptions.add(refillKeyOption);
 		moduleOptions.add(refillDelayOption);
 
 		moduleOptions.add(recraftOption);
@@ -70,6 +69,13 @@ public class AutoSoup extends Module {
 	ModuleBoolean refillOption = new ModuleBoolean("refill", false) {
 		public void valueChanged() {
 			refill = (boolean) this.getValue();
+		}
+	};
+
+	int refillKey = 0;
+	ModuleKey refillKeyOption = new ModuleKey(0) {
+		public void valueChanged() {
+			refillKey = (int) this.getValue();
 		}
 	};
 
@@ -140,6 +146,19 @@ public class AutoSoup extends Module {
 	int soupInHotbar;
 	int soupInInventory;
 
+	private void toggleRefill(){
+		refill = !refill;
+		refillOption.setValue(refill);
+		refillOption.getButton().setValue(refill);
+	}
+
+	@EventHandler
+	private Listener<OnKeyEvent> onKeyEventListener = new Listener<>(e -> {
+		if(refillKeyOption.getKey() == e.getKey() && e.isPressed()){
+			toggleRefill();
+		}
+	});
+
 	@EventHandler
 	private Listener<OnTickEvent> onTickEvent = new Listener<>(e -> {
 		if (mc.currentScreen instanceof GuiInventory) {
@@ -150,9 +169,9 @@ public class AutoSoup extends Module {
 				if (refill) { // opcao de refill ativada e nao ta fazendo recraft
 					if (refillTimer.hasTimePassed(refillDelay)) { // timer passou
 						soupInInventory = InventoryItem.findItemRandomized(9, 36, Items.mushroom_stew, mc); // tenta
-																											// pegar
-																											// sopa no
-																											// inv
+						// pegar
+						// sopa no
+						// inv
 						if (soupInInventory != -1 && InventoryItem.hasSpaceHotbar(mc)) { // tem sopa e espaço na hotbar
 							mc.playerController.windowClick(0, soupInInventory, 0, 1, mc.thePlayer);
 							refillTimer.reset();

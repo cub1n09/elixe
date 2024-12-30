@@ -2,10 +2,12 @@ package elixe.modules.option;
 
 import java.lang.reflect.Type;
 
+import elixe.Elixe;
 import elixe.modules.AModuleOption;
 import elixe.ui.base.ElixeButtonBase;
+import me.zero.alpine.listener.Listenable;
 
-public class ModuleBoolean extends AModuleOption {
+public class ModuleBoolean extends AModuleOption implements Listenable {
 	private boolean state;
 
 
@@ -29,4 +31,5 @@ public class ModuleBoolean extends AModuleOption {
 		this.state = (boolean) v;
 		valueChanged();
 	}
+
 }

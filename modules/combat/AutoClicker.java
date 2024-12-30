@@ -15,7 +15,6 @@ import elixe.modules.option.ModuleFloat;
 import elixe.modules.option.ModuleInteger;
 import elixe.ui.clickgui.ElixeMenu;
 import elixe.utils.misc.TimerUtils;
-import jdk.nashorn.internal.ir.CatchNode;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
 import net.minecraft.client.settings.KeyBinding;

@@ -186,7 +186,7 @@ public class ElixeMenu extends GuiScreen {
 	}
 
 	private void drawFooter() {
-		String footerText = ".gg/F4KHWfZz4s";
+		String footerText = ".gg/9tfJqj5tPQ"; // discord link
 		int footerWidth = mc.fontRendererObj.getStringWidth(footerText);
 		int footerX = GUI_X + (GUI_WIDTH - footerWidth) / 2;
 		int footerY = GUI_Y + GUI_HEIGHT;
