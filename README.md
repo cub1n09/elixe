@@ -20,4 +20,4 @@ We can't release the decompiled source code of Minecraft in any way. Because of 
 ## Discord
 Our little community if you want to join. Please read INFO before anything!
 
-[![widget for the community guild](https://discord.com/api/guilds/739053636583424060/widget.png?style=shield)](https://discord.gg/F4KHWfZz4s)
+[![widget for the community guild](https://discord.com/api/guilds/1323066868646281216/widget.png?style=shield)](https://discord.gg/9tfJqj5tPQ)
