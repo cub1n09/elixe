@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
+import elixe.modules.option.ModuleFloat;
 import org.lwjgl.opengl.GL11;
 
 import elixe.Elixe;
@@ -27,7 +28,11 @@ public class HUD extends Module {
 		
 		moduleOptions.add(watermarkOption);
 		moduleOptions.add(moduleListOption);
+		moduleOptions.add(moduleSizeHudOption);
+
 		moduleOptions.add(sprintingOption);
+		//moduleOptions.add(sprintingPosOption);
+		moduleOptions.add(sprintingSizeOption);
 	}
 
 	boolean watermark;
@@ -44,11 +49,21 @@ public class HUD extends Module {
 		}
 	};
 
+	float moduleSizeHud=1f;
+	ModuleFloat moduleSizeHudOption = new ModuleFloat("Size Hud", moduleSizeHud, 0f , 2f) {
+		public void valueChanged() { moduleSizeHud = (float) this.getValue(); }
+	};
+
 	boolean sprinting;
 	ModuleBoolean sprintingOption = new ModuleBoolean("sprinting", false) {
 		public void valueChanged() {
 			sprinting = (boolean) this.getValue();
 		}
+	};
+
+	float sprintingSize = 1f;
+	ModuleFloat sprintingSizeOption = new ModuleFloat("sprinting size", sprintingSize, 0f , 2f) {
+		public void valueChanged() { sprintingSize = (float) this.getValue(); }
 	};
 
 	public void setModuleManager(ModuleManager moduleManager) {
@@ -61,36 +76,40 @@ public class HUD extends Module {
 	@EventHandler
 	private Listener<OnRender2DEvent> onRender2DEvent = new Listener<>(e -> {
 		if (!this.mc.gameSettings.showDebugInfo) {
-			int ySpacing = 5;
-			int xSpacing = 10;
-			
+			int initialY = sprinting ? 12 : 5;
+			int ySpacing = (int) (initialY * moduleSizeHud);
+
 			if (watermark) {
-				mc.fontRendererObj.drawStringWithShadow("(" + address + ")", 10f, ySpacing + 14, 0.5f, 0.4f);
 				GL11.glPushMatrix();
-				GL11.glScalef(1.5f, 1.5f, 1.5f);
-				mc.fontRendererObj.drawStringWithShadow("elixe", 7f, ySpacing, 1f, 1f);
+				GL11.glScalef(moduleSizeHud, moduleSizeHud, moduleSizeHud);
+				mc.fontRendererObj.drawStringWithShadow("elixe (" + Elixe.INSTANCE.build + ")", 7f / moduleSizeHud, ySpacing / moduleSizeHud, 1f, 1f);
 				GL11.glPopMatrix();
-				mc.fontRendererObj.drawStringWithShadow("(" + Elixe.INSTANCE.build + ")", 48f, ySpacing + 6, 0.5f, 0.8f);
-				ySpacing += 23;
-				xSpacing += 110;
+
+				ySpacing += (int) (10 * moduleSizeHud);
 			}
+
 
 			if (moduleList) {
 				int yModule = ySpacing;
 				for (Module module : modules) {
 					if (module.isToggled()) {
-						mc.fontRendererObj.drawStringWithShadow(module.getName().toLowerCase(), 10f, yModule, 1f, 0.5f);
-						yModule += mc.fontRendererObj.FONT_HEIGHT;
+
+						GL11.glPushMatrix();
+						GL11.glScalef(moduleSizeHud, moduleSizeHud, moduleSizeHud);
+						mc.fontRendererObj.drawStringWithShadow(module.getName().toLowerCase(), 12f / moduleSizeHud, yModule / moduleSizeHud, 1f, 0.5f);
+						GL11.glPopMatrix();
+
+						yModule += (int) (mc.fontRendererObj.FONT_HEIGHT * moduleSizeHud);
 					}
-				}
-				if (!watermark) {
-					xSpacing += 80;
 				}
 			}
 
 			
 			if (sprinting) {
-				mc.fontRendererObj.drawStringWithShadow(mc.thePlayer.isSprinting() ? "[Sprinting (Toggled)]" : "", xSpacing, watermark ? 11f : 5f, 1f, 1f);
+				GL11.glPushMatrix();
+				GL11.glScalef(sprintingSize, sprintingSize, sprintingSize);
+				mc.fontRendererObj.drawStringWithShadow(mc.thePlayer.isSprinting() ? "[Sprinting (Toggled)]" : "", 1f / sprintingSize, 1f / sprintingSize, 1f, 1f);
+				GL11.glPopMatrix();
 			}
 
 		}
